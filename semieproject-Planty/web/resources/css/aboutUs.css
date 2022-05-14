@@ -1,0 +1,120 @@
+
+*{
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+
+/*타이틀 */
+.title {
+    text-align: center;
+    padding-top: 70px;
+}
+
+.title h1{
+    font-size: 20px;
+
+}
+
+.subtitle{
+    text-align: center;
+    margin: 70px 350px;
+}
+
+/*    contents   */
+.content{
+    text-align: center;
+    margin: 70px 0px;
+}
+
+.about1{
+    text-align: center;
+    margin: 0 0 70px 0;
+}
+
+.about2{
+    text-align: center;
+    margin: 0 0 70px 0;
+}
+
+.about3{
+    text-align: center;
+    margin: 0 0 70px 0;
+}
+
+.about-img{
+    max-width: 500px;
+    margin-bottom: 25px;
+}
+
+#content-title{
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #4C5B5D;
+}
+#content-subtitle{
+    font-size: 20px;
+    color: #249798;
+}
+
+.content p{
+    font-size: 15px;
+    white-space: pre-line;
+    color: #4C5B5D;
+}
+
+/*     footer    */
+html, body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  #wrap {
+    min-height: 100vh;
+    position: relative;
+    width: 100%; 
+  
+  }
+  
+  section {
+    padding-bottom: 105px;
+  }
+  
+  footer {
+    text-align: center;
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    border-top: solid 0.5px #4C5B5D ;;
+    padding-top: 30px;
+    color: #4C5B5D;
+    font-size: 15px;
+  }
+  
+  footer a {
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 20px 10px 20px;
+    color: #4C5B5D; font-size: 11px;
+  }
+  
+  footer a:visited {
+    color: #4C5B5D;
+  }
+  
+  footer p {
+    margin-top: 0; 
+    margin-bottom: 0;   
+  }
+  
+  footer p span {
+    font-size: 5px;
+    display: inline-block;
+    margin-left: 20px;
+  }
+
+  footer nav a {
+    font-size: 5px;
+  }

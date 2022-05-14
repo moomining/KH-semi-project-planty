@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderDAO">
+	<resultMap type="com.planty.jsp.order.model.dto.OrderDTO" id="orderResultMap">
+		<id property="proNo" column="PRO_NO"/>
+		<id property="ordNo" column="ORD_NO"/>
+		<result property="amount" column="AMOUNT"/>
+		
+		<association property="product" resultMap="productResultMap"></association>
+		<association property="orderDetail" resultMap="orderDetailResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.planty.jsp.product.model.dto.ProductDTO" id="productResultMap">
+		<id property="pro_no" column="PRO_NO"/>
+		<result property="cate_no" column="CATE_NO"/>
+		<result property="par_id" column="ID"/>
+		<result property="pro_name" column="PRO_NAME"/>
+		<result property="pro_price" column="PRO_PRICE"/>
+		<result property="pro_content" column="PRO_CONTENT"/>
+	</resultMap>
+	
+	<resultMap type="com.planty.jsp.order.model.dto.OrderDetailDTO" id="orderDetailResultMap">
+		<id property="ordNo" column="ORD_NO"/>
+		<result property="id" column="ID"/>
+		<result property="recName" column="REC_NAME"/>
+		<result property="recAddress" column="REC_ADDRESS"/>
+		<result property="recPhone" column="REC_PHONE"/>
+		<result property="recZipcode" column="REC_ZIPCODE"/>
+		<result property="recReq" column="REC_REQ"/>
+		<result property="ordPrice" column="ORD_PRICE"/>
+		<result property="ordDate" column="ORD_DATE"/>
+		<result property="ordState" column="ORD_STATE"/>
+		<result property="ordDelivery" column="ORD_DELIVERY"/>
+		<result property="ordDevNo" column="ORD_DEV_NO"/>
+		
+	</resultMap>
+	
+	
+	
+	<select id="selectOrderList" resultMap="orderResultMap">
+        SELECT A.PRO_NO
+        	 , A.ORD_NO
+        	 , A.AMOUNT
+             , B.PRO_NAME
+             , B.PRO_PRICE
+             , C.ORD_DATE
+             , C.ORD_STATE
+             , C.ORD_DELIVERY
+          FROM ORDER_P A
+          JOIN PRODUCT B ON (A.PRO_NO = B.PRO_NO)
+          JOIN ORDER_DETAIL C ON (A.ORD_NO = C.ORD_NO)
+         WHERE C.ID = #{ id }
+         ORDER BY A.ORD_NO DESC
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,48 @@
+@charset "UTF-8";       /* 인코딩 문자 깨짐 방지 */
+*{
+text-align: center;
+margin: 0;
+padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* header */
+
+/* 로고 크기 및 여백 */
+.logo {
+    position: relative;
+    width: 130px;
+    margin-top : 60px;
+}
+
+
+/* 콘텐츠의 최대 출력 너비 설정 */
+.wrapper {
+    margin : 0 auto;
+    padding : 0 4%;
+}
+
+
+
+/* intr */
+/* 큰 배경 이미지 */
+
+.back{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#intr{
+    background-image: url("../image/photo-1508502726440-477c94bc369e.jpeg");
+    min-height: 100vh;
+
+}
+
