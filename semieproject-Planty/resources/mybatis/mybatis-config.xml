@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+
+        <setting name="jdbcTypeForNull" value="NULL"/>
+
+    </settings>
+
+	<environments default="dev">
+		<environment id="dev">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="net.sf.log4jdbc.DriverSpy"/>
+				<property name="url" value="jdbc:log4jdbc:oracle:thin:@127.0.0.1:1521:xe"/>
+				<property name="username" value="C##PLANTY"/>
+				<property name="password" value="PLANTY"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+<mappers>
+	<mapper resource="com/planty/jsp/user/model/dao/UserDAO.xml"/>
+    <mapper resource="com/planty/jsp/customercare/notice/model/dao/NoticeDAO.xml"/>
+    <mapper resource="com/planty/jsp/review/model/dao/ReviewDAO.xml"/>
+   	<mapper resource="com/planty/jsp/order/model/dao/OrderDAO.xml"/>
+</mappers>
+	
+	
+</configuration>

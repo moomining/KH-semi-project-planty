@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NoticeDAO">
+	
+	<resultMap type="com.planty.jsp.customercare.notice.model.dto.NoticeDTO" id="noticeResultMap">
+		<id property="no" column="NOTICE_NO"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="id" column="ID"/>
+		<result property="count" column="NOTICE_COUNT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="editDate" column="EDIT_DATE"/>
+		<result property="status" column="NOTICE_STATUS"/>
+	</resultMap>
+	
+	<select id="selectAllNoticeList" resultMap="noticeResultMap">
+        SELECT 
+               NOTICE_NO
+             , TITLE
+             , CONTENT
+             , CREATE_DATE    
+         FROM NOTICE
+        WHERE NOTICE_STATUS = 'N'
+        ORDER BY NOTICE_NO DESC
+	</select>
+	
+	<insert id="insertNotice">
+        INSERT 
+          INTO NOTICE 
+        (
+          NOTICE_NO
+        , TITLE
+        , CONTENT
+        , ID   
+        )
+        VALUES
+        (
+          SEQ_NOTICE_NO.NEXTVAL
+        , #{ title }
+        , #{ content }
+        , #{ id }
+        )
+	</insert>
+	
+	<update id="incrementNoticeCount" >
+        UPDATE 
+               NOTICE A
+           SET A.NOTICE_COUNT = (SELECT B.NOTICE_COUNT
+                                   FROM NOTICE B
+                                  WHERE B.NOTICE_NO = #{ no }
+                                ) + 1
+         WHERE A.NOTICE_NO = #{ no }
+	</update>
+	
+	<select id="selectNoticeDetail" resultMap="noticeResultMap">
+        SELECT 
+               NOTICE_NO
+             , TITLE
+             , CONTENT
+             , NOTICE_COUNT
+             , CREATE_DATE             
+          FROM NOTICE 
+         WHERE NOTICE_STATUS = 'N'
+           AND NOTICE_NO = #{ no }
+	</select>
+	
+	<update id="updateNotice">
+		UPDATE 
+		       NOTICE
+		   SET TITLE = #{ title }
+		     , CONTENT = #{ content }
+		 WHERE NOTICE_NO = #{ no }
+	</update>
+	
+	<update id="deleteNotice">
+		UPDATE 
+		       NOTICE
+		   SET NOTICE_STATUS = 'Y'
+		 WHERE NOTICE_NO = #{ no }
+	</update>
+</mapper>

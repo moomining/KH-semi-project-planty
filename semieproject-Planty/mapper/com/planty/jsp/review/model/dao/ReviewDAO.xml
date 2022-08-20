@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReviewDAO">
+	
+	<resultMap type="com.planty.jsp.review.model.dto.ReviewDTO" id="reviewResultMap">
+		<id property="reviewNo" column="REVIEW_NO"/>
+		<result property="ordNo" column="ORD_NO"/>
+		<result property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="score" column="SCORE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="date" column="MADE_DATE"/>
+		<result property="editDate" column="EDIT_DATE"/>
+		<result property="delYn" column="DEL_YN"/>
+		
+		<association property="order" resultMap="orderResultMap"/>
+		<association property="member" resultMap="userResultMap"/>
+		
+		<collection property="attachmentList" resultMap="attachmentResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.planty.jsp.review.model.dto.AttachmentDTO" id="attachmentResultMap">
+		<id property="attachNo" column="ATTACHMENT_NO"></id>
+		<result property="reviewNo" column="REVIEW_NO"/>
+		<result property="orgName" column="ORG_NAME"/>
+		<result property="savedName" column="SAVED_NAME"/>
+		<result property="savePath" column="SAVE_PATH"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="thumPath" column="THUM_PATH"/>
+		
+	</resultMap>
+
+	
+	<resultMap type="com.planty.jsp.user.model.dto.UserDTO" id="userResultMap">
+		<id property="id" column="ID"/>
+		<result property="authNo" column="AUTH_NO"/>
+		<result property="pwd" column="PWD"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="addrDetail" column="ADDR_DETAIL"/>
+		<result property="zipcode" column="ZIPCODE"/>
+		<result property="phone" column="PHONE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="textYn" column="TEXT_YN"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+		<result property="name" column="NAME"/>
+	</resultMap>
+	
+	<resultMap type="com.planty.jsp.order.model.dto.OrderDTO" id="orderResultMap">
+		<id property="proNo" column="PRO_NO"/>
+		<id property="ordNo" column="ORD_NO"/>
+		<result property="amount" column="AMOUNT"/>
+		
+		<association property="product" resultMap="productResultMap"/>
+		<association property="orderDetail" resultMap="orderDetailResultMap"/>
+	</resultMap>
+	
+	<resultMap type="com.planty.jsp.product.model.dto.ProductDTO" id="productResultMap">
+		<id property="pro_no" column="PRO_NO"/>
+		<result property="cate_no" column="CATE_NO"/>
+		<result property="par_id" column="ID"/>
+		<result property="pro_name" column="PRO_NAME"/>
+		<result property="pro_price" column="PRO_PRICE"/>
+		<result property="pro_content" column="PRO_CONTENT"/>
+
+	</resultMap>
+	
+	<resultMap type="com.planty.jsp.order.model.dto.OrderDetailDTO" id="orderDetailResultMap">
+		<id property="ordNo" column="ORD_NO"/>
+		<result property="id" column="ID"/>
+		<result property="recName" column="REC_NAME"/>
+		<result property="recAddress" column="REC_ADDRESS"/>
+		<result property="recPhone" column="REC_PHONE"/>
+		<result property="recZipcode" column="REC_ZIPCODE"/>
+		<result property="recReq" column="REC_REQ"/>
+		<result property="ordPrice" column="ORD_PRICE"/>
+		<result property="ordDate" column="ORD_DATE"/>
+		<result property="ordState" column="ORD_STATE"/>
+		<result property="ordDelivery" column="ORD_DELIVERY"/>
+		<result property="ordDevNo" column="ORD_DEV_NO"/>
+		
+		
+	</resultMap>
+	
+	
+	
+	<select id="selectReviewList" resultMap="reviewResultMap">
+        SELECT A.REVIEW_NO
+        	 , A.ORD_NO
+        	 , A.ID
+             , A.SCORE
+             , A.TITLE
+             , A.CONTENT
+             , A.MADE_DATE
+             , B.ATTACHMENT_NO
+             , B.ORG_NAME
+             , B.SAVED_NAME
+             , B.FILE_TYPE
+             , B.SAVE_PATH
+             , B.THUM_PATH
+             , D.PRO_NAME
+             , E.ORD_DATE
+          FROM REVIEW A
+          JOIN ATTACHMENT B ON (A.REVIEW_NO = B.REVIEW_NO)
+          JOIN ORDER_P C ON (A.ORD_NO = C.ORD_NO)
+          JOIN PRODUCT D ON (C.PRO_NO = D.PRO_NO)
+          JOIN ORDER_DETAIL E ON (C.ORD_NO = E.ORD_NO)
+         WHERE A.ID = #{ id }
+         ORDER BY A.REVIEW_NO DESC, B.FILE_TYPE DESC
+	</select>
+	
+	<insert id="insertReview" >
+        INSERT /* com.planty.jsp.board.model.dao.reviewDAO#insertThumbnailContent() */
+          INTO REVIEW
+        (
+          REVIEW_NO
+        , ORD_NO
+        , ID
+        , SCORE
+        , TITLE
+        , CONTENT
+        , MADE_DATE
+        , DEL_YN
+        )
+        VALUES 
+        (
+          SEQ_REVIEW_NO.NEXTVAL
+        , 22031922   <!-- OrderDTO랑 합치면 수정!! -->
+        , #{ id }
+        , #{ score }
+        , #{ title }
+        , #{ content }
+        , SYSDATE
+        , 'N'
+        )
+        <selectKey keyProperty="reviewNo" resultType="Integer" order="AFTER">
+        	SELECT
+        	       SEQ_REVIEW_NO.CURRVAL
+        	  FROM DUAL
+        </selectKey>
+	</insert>
+	
+	<insert id="insertAttachment">
+        INSERT /* com.planty.jsp.board.model.dao.reviewDAO#insertAttachment() */
+          INTO ATTACHMENT 
+        (
+          ATTACHMENT_NO
+        , REVIEW_NO
+        , ORG_NAME
+        , SAVED_NAME
+        , SAVE_PATH
+        , FILE_TYPE
+        , THUM_PATH
+        )
+        VALUES 
+        (
+          SEQ_ATTACHMENT_NO.NEXTVAL
+        , #{ reviewNo }
+        , #{ orgName }
+        , #{ savedName }
+        , #{ savePath }
+        , #{ fileType }
+        , #{ thumPath }
+        )
+	</insert>
+	
+	
+	<select id="selectOneReview" resultMap="reviewResultMap">
+        SELECT A.REVIEW_NO
+             , A.ID
+             , A.SCORE
+             , A.TITLE
+             , A.CONTENT
+             , A.MADE_DATE
+             , A.EDIT_DATE
+             , A.DEL_YN
+             , B.ATTACHMENT_NO
+             , B.ORG_NAME
+             , B.SAVED_NAME
+             , B.SAVE_PATH
+             , B.FILE_TYPE
+             , B.THUM_PATH
+          FROM REVIEW A
+          JOIN ATTACHMENT B ON (A.REVIEW_NO = B.REVIEW_NO)
+         WHERE A.REVIEW_NO = #{ no }
+	</select>
+</mapper>
